@@ -1,0 +1,20 @@
+1) ArrayList -> LinkedList
+2) client из j2l6-client
+3) port - извне
+4) SQLHandler на основе j2l4-db-lesson
+5) connect
+6) load nick from db
+7) addClient -> to ClientHandler
+8) auth GUI on client
+
+
+9) хинты в полях
+-10) ?? подтверждение авторизации
+11) одна учетка - один юзер
+12) личные сообщения в чате
+13) список клиентов
+14) Scanner на DataInputStream
+15) PrintWriter на DataOutputStream
+
+- аутентификация
+- фильтр плохих слов
