@@ -22,5 +22,6 @@ public class TestServer {
 //        server.addFilter(new ChairOnlyFilter());
         server.addFilter(new CommandFilter());
         //и т.д. - по ходу программы можем добавлять новые фильтры
+        //пара строк
     }
 }
