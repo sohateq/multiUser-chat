@@ -2,12 +2,15 @@ package server;
 
 import exceptions.ChangeNickException;
 
+import java.util.ArrayList;
+
 /**
  * Created by Анатолий on 13.03.2017.
  */
 public class Commands {
+    ArrayList<String> commandsInfo = new ArrayList<>();
 
-    public static void ifCommand(String command, ClientHandler clientHandler){
+   public static void ifCommand(String command, ClientHandler clientHandler){
         if (command.contains("/changenick")){
             changeNick(command, clientHandler);
         }
@@ -38,5 +41,7 @@ public class Commands {
         }
     }
 
+    public static void showCommands(ClientHandler clientHandler){
 
+    }
 }
