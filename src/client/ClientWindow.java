@@ -151,6 +151,15 @@ public class ClientWindow extends JFrame {
                     while (true) {
                             String message = in.readUTF();
                             if (message.equalsIgnoreCase("end session")) {
+                                try {
+                                    out.writeUTF("end");
+                                    out.flush();
+                                    socket.close();
+                                    out.close();
+                                    in.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                             } else if (message.equalsIgnoreCase("signIn_success")) {
                                 JOptionPane.showMessageDialog(null, "SingIn ok!");

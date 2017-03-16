@@ -10,10 +10,25 @@ import java.util.ArrayList;
  */
 public class Commands {
     private static ArrayList<String> commandsInfo = makeList();
+    private static final String PASSWORD = "adminPass123";
 
-   public static void ifCommand(String command, ClientHandler clientHandler){
+    public static void ifCommand(String command, ClientHandler clientHandler){
         if (command.contains("/changenick")){
             changeNick(command, clientHandler);
+        }
+        if (command.contains("/kill")){
+            killClient(clientHandler, command);
+//            String[] cm = command.split(" ");
+//            if (cm[1].equals(PASSWORD)) {
+//                killClient(clientHandler);
+//            } else{
+//                try{
+//                    clientHandler.getOut().writeUTF("Неверный пароль"); //надо проверить, не рассылается ли оно всем.
+//                    //new Thread(new MessagesSender("Неверный пароль", clientHandler.getClientName(), clientHandler.getServer())).start(); //и тогда заменить на это
+//                } catch (IOException e){
+//                    e.printStackTrace();
+//                }
+//            }
         }
 
     }
@@ -62,5 +77,36 @@ public class Commands {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void killClient(ClientHandler clientHandler, String command) {
+        String[] cm = command.split(" ");
+        if (!cm[1].equals(PASSWORD)) {
+            try {
+                clientHandler.getOut().writeUTF("Неверный пароль"); //надо проверить, не рассылается ли оно всем.
+                //new Thread(new MessagesSender("Неверный пароль", clientHandler.getClientName(), clientHandler.getServer())).start(); //и тогда заменить на это
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String nick = "";
+        for (int i = 2; i < cm.length; i++) {
+            nick = nick + cm[i] + " ";
+        }
+        if (clientHandler.getServer().getClientHandlerByNick(nick) != null) {
+            try {
+                clientHandler.getOut().writeUTF("end session");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        //        try {
+//            clientHandler.getOut().writeUTF("end session");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

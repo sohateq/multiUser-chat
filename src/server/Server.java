@@ -40,13 +40,19 @@ public class Server {
     }
 
     public synchronized void deleteClient (ClientHandler clientHandler){
-//        for (ClientHandler clients : clients) {
-//            if (clients.getClientHandler() == clientHandler) {
-//                clients.
-//            }
-//        }
+
         clients.remove(clientHandler);
 
+    }
+
+    public ClientHandler getClientHandlerByNick(String nick){
+        //return clients.get(clients.indexOf(nick));
+        for(ClientHandler client : clients) {
+            if (client.getClientName().equals(nick)) {
+                return client;
+            }
+        }
+        return null;
     }
 
     public Server(int serverPort, String dbName) {
