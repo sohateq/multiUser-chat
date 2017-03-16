@@ -2,13 +2,14 @@ package server;
 
 import exceptions.ChangeNickException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by Анатолий on 13.03.2017.
  */
 public class Commands {
-    ArrayList<String> commandsInfo = new ArrayList<>();
+    private static ArrayList<String> commandsInfo = makeList();
 
    public static void ifCommand(String command, ClientHandler clientHandler){
         if (command.contains("/changenick")){
@@ -41,7 +42,25 @@ public class Commands {
         }
     }
 
+    public static ArrayList<String> makeList(){
+       ArrayList<String> commandList = new ArrayList<>();
+       commandList.add("---Вам доступны следующие комманды---");
+       commandList.add("/changenick New_Nick - позволяет сменить имяучетной записи");
+       return commandList;
+    }
     public static void showCommands(ClientHandler clientHandler){
-
+//       try{
+//           clientHandler.getOut().writeUTF(commandsInfo.toString());
+//       } catch(IOException e){
+//           e.printStackTrace();
+//           System.out.println("Не получается показать команды");
+//       }
+        for(String com : commandsInfo){
+            try{
+                clientHandler.getOut().writeUTF(com);
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
