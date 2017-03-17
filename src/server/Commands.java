@@ -60,7 +60,8 @@ public class Commands {
     public static ArrayList<String> makeList(){
        ArrayList<String> commandList = new ArrayList<>();
        commandList.add("---Вам доступны следующие комманды---");
-       commandList.add("/changenick New_Nick - позволяет сменить имяучетной записи");
+       commandList.add("/changenick New_Nick - позволяет сменить имя учетной записи");
+       commandList.add("/kil Server_Password Nick - удаление пользователя с именем Nick из чата");
        return commandList;
     }
     public static void showCommands(ClientHandler clientHandler){
@@ -94,11 +95,14 @@ public class Commands {
         for (int i = 2; i < cm.length; i++) {
             nick = nick + cm[i] + " ";
         }
-        if (clientHandler.getServer().getClientHandlerByNick(nick) != null) {
+        ClientHandler temp;
+        if ((temp =  clientHandler.getServer().getClientHandlerByNick(nick)) != null) {
             try {
-                clientHandler.getOut().writeUTF("end session");
+                temp.getOut().writeUTF("Администратор выгнал вас из чата");
+                temp.getOut().writeUTF("end session");
             } catch (IOException e) {
                 e.printStackTrace();
+
             }
         }
 

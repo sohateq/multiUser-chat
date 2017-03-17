@@ -8,7 +8,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ClientWindow extends JFrame {
 
@@ -29,7 +28,7 @@ public class ClientWindow extends JFrame {
 
         initConnection();
         initGUI();
-        initServerListner();
+        initServerListener();
     }
 
     private void initConnection() {
@@ -143,7 +142,7 @@ public class ClientWindow extends JFrame {
         out.flush();
     }
 
-    private void initServerListner() {
+    private void initServerListener() {
         new Thread(new Runnable() {
             @Override
             public void run() {
