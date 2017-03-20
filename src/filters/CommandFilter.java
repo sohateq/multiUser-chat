@@ -17,7 +17,7 @@ public class CommandFilter implements ChatFilter {
         if (message.contains("/kill")) {
             return null;
         }
-        if (message.equals("end")) return "Пользователь покинул чат";
+        if (message.endsWith("/end")) return message.replace("/end", "Покинул чат");
 
         if (message.contains("auth___")) { //на всякий случай, чтобы не засветить пароль если в программе есть ошибка
             return null;

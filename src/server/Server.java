@@ -45,7 +45,7 @@ public class Server {
 
     }
 
-    public ClientHandler getClientHandlerByNick(String nick){
+    public synchronized ClientHandler getClientHandlerByNick(String nick){
         //return clients.get(clients.indexOf(nick));
         for(ClientHandler client : clients) {
             if (client.getClientName().equals(nick)) {

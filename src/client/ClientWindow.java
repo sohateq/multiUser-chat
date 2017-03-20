@@ -151,7 +151,7 @@ public class ClientWindow extends JFrame {
                             String message = in.readUTF();
                             if (message.equalsIgnoreCase("end session")) {
                                 try {
-                                    out.writeUTF("end");
+                                    out.writeUTF("/end");
                                     out.flush();
                                     socket.close();
                                     out.close();
