@@ -18,21 +18,11 @@ public class Commands {
         }
         if (command.contains("/kill")){
             killClient(clientHandler, command);
-//            String[] cm = command.split(" ");
-//            if (cm[1].equals(PASSWORD)) {
-//                killClient(clientHandler);
-//            } else{
-//                try{
-//                    clientHandler.getOut().writeUTF("Неверный пароль"); //надо проверить, не рассылается ли оно всем.
-//                    //new Thread(new MessagesSender("Неверный пароль", clientHandler.getClientName(), clientHandler.getServer())).start(); //и тогда заменить на это
-//                } catch (IOException e){
-//                    e.printStackTrace();
-//                }
-//            }
+
         }
 
     }
-
+    //public static void changeNick(){}
     public static void changeNick(String message, ClientHandler clientHandler) {
 
         //String command = ifCommand(message);

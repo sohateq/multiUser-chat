@@ -91,14 +91,7 @@ public class SQLHandler {
             throw new AuthFailException();
         }
 
-
-
-
-
-
-
-
-    return nick;
+        return nick;
     }
 
     public static void changeNick(String oldNick, String newNick) throws ChangeNickException {
@@ -112,6 +105,18 @@ public class SQLHandler {
             System.out.println("Не удалось сменить ник");
             throw new ChangeNickException();
         }
+    }
+
+    public static void registration (String nick, String login, String pass){
+        try{
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("insert into \"users_table\" "
+                    + "values ('" + nick + "', '" + login + "', '" + pass + "')");
+            System.out.println("Зарегистирировался новый пользователь с ником " + nick);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
     }
 
 }

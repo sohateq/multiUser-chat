@@ -72,6 +72,7 @@ public class ClientWindow extends JFrame {
 
         authPanel.add(signInButton);
 
+
         JTextField passwordField = new JTextField();
         passwordField.setToolTipText("Пароль сюда на!");
 
@@ -83,6 +84,11 @@ public class ClientWindow extends JFrame {
         authPanel.add(label2);
         authPanel.add(passwordField);
         add(authPanel, BorderLayout.NORTH);
+
+        JButton registerButton = new JButton("Зарегистрироваться");
+        registerButton.setFont(font1);
+
+        authPanel.add(registerButton);
 
         signInButton.addActionListener(new ActionListener() {
             @Override

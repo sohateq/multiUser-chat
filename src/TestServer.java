@@ -1,6 +1,7 @@
 import filters.ChairOnlyFilter;
 import filters.CommandFilter;
 import filters.JavaOnlyFilter;
+import server.SQLHandler;
 import server.Server;
 
 public class TestServer {
@@ -23,5 +24,6 @@ public class TestServer {
         server.addFilter(new CommandFilter());
         //и т.д. - по ходу программы можем добавлять новые фильтры
         //пара строк и еще немного
+        SQLHandler.registration("1", "2", "3");
     }
 }
