@@ -11,6 +11,9 @@ import java.net.Socket;
 
 public class ClientWindow extends JFrame {
 
+    public static final int WINDOW_WIDTH = 650;
+    public static final int WINDOW_HEIGHT = 600;
+
     JPanel authPanel;
     private JTextField clientMsgElement;
     private JTextArea serverMsgElement;
@@ -42,24 +45,42 @@ public class ClientWindow extends JFrame {
     }
 
     private void initGUI() {
-        setBounds(600, 300, 800, 800);
+        setBounds(600, 300, WINDOW_WIDTH, WINDOW_HEIGHT);
         setTitle("Клиент");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Font font1 = new Font("Arial", 0, 18 );
 
         //authentication
         authPanel = new JPanel(new GridLayout(2,3));
-
+        //authPanel.setMinimumSize(new Dimension(WINDOW_WIDTH, (int)(0.1 * WINDOW_HEIGHT)));//не работает
+        //authPanel.setSize(new Dimension(WINDOW_WIDTH, (int)(0.25 * WINDOW_HEIGHT)));
+        authPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, (int)(0.15 * WINDOW_HEIGHT)));
         JTextField loginField = new JTextField();
-        loginField.setToolTipText("Enter your Login here");
-        authPanel.add(new JLabel("Login: "));
+        loginField.setToolTipText("Введите логин уже");
+
+        loginField.setFont(font1);
+        JLabel label1 = new JLabel("Логин: ");
+        label1.setFont(font1);
+        //label1.setAlignmentX(CENTER_ALIGNMENT); //это неработает
+        label1.setHorizontalAlignment(SwingConstants.CENTER); //а это работает!!)
+        authPanel.add(label1);
+
         authPanel.add(loginField);
 
-        JButton signInButton = new JButton("Sing In");
+        JButton signInButton = new JButton("Войти в чат");
+        signInButton.setFont(font1);
+
         authPanel.add(signInButton);
 
         JTextField passwordField = new JTextField();
-        passwordField.setToolTipText("Enter your Password here");
-        authPanel.add(new JLabel("Password: "));
+        passwordField.setToolTipText("Пароль сюда на!");
+
+        passwordField.setFont(font1);
+        JLabel label2 = new JLabel("Пароль: ");
+        label2.setFont(font1);
+        label2.setHorizontalAlignment(SwingConstants.CENTER);
+
+        authPanel.add(label2);
         authPanel.add(passwordField);
         add(authPanel, BorderLayout.NORTH);
 
@@ -77,18 +98,22 @@ public class ClientWindow extends JFrame {
 
         //многострочный элемент для всех сообщений
         serverMsgElement = new JTextArea();
-        serverMsgElement.setEditable(false);
+        //serverMsgElement.setEditable(false);
         serverMsgElement.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(serverMsgElement);
+        serverMsgElement.setFont(new Font("Arial", 1, 16));
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, (int)(0.07 * WINDOW_HEIGHT)));
         add(bottomPanel, BorderLayout.SOUTH);
 
         //кнопка отправки сообщения
         JButton sendButton = new JButton("Отправить");
+        sendButton.setFont(font1);
         bottomPanel.add(sendButton, BorderLayout.EAST);
         clientMsgElement = new JTextField();
+        clientMsgElement.setFont(font1);
         bottomPanel.add(clientMsgElement, BorderLayout.CENTER);
 
         //отправка по кнопке
@@ -123,12 +148,15 @@ public class ClientWindow extends JFrame {
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
                 try {
-                    out.writeUTF("end");
+                    out.writeUTF("/end");
                     out.flush();
                     socket.close();
                     out.close();
                     in.close();
                 } catch (IOException exc) {
+                }
+                finally {
+                    System.exit(0);
                 }
             }
         });
