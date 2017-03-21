@@ -104,7 +104,7 @@ public class ClientWindow extends JFrame {
 
         //многострочный элемент для всех сообщений
         serverMsgElement = new JTextArea();
-        //serverMsgElement.setEditable(false);
+        serverMsgElement.setEditable(false);
         serverMsgElement.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(serverMsgElement);
         serverMsgElement.setFont(new Font("Arial", 1, 16));

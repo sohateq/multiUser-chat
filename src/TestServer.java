@@ -24,6 +24,6 @@ public class TestServer {
         server.addFilter(new CommandFilter());
         //и т.д. - по ходу программы можем добавлять новые фильтры
         //пара строк и еще немного
-        SQLHandler.registration("1", "2", "3");
+        //SQLHandler.registration("1", "2", "3");
     }
 }

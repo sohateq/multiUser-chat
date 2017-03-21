@@ -7,7 +7,7 @@ public class TestClients {
 
     public static void main(String[] args) {
         new ClientWindow(SERVER_HOST, SERVER_PORT);
- //       new ClientWindow(SERVER_HOST, SERVER_PORT);
+        new ClientWindow(SERVER_HOST, SERVER_PORT);
 //        new ClientWindow(SERVER_HOST, SERVER_PORT);
     }
 }
