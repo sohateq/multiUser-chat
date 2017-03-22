@@ -37,9 +37,9 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        waitForAuth();
-        Commands.showCommands(this);
+        if (!waitForAuth()) return;;
 
+        Commands.showCommands(this);
 
         waitForMessage();
         server.deleteClient(this);
@@ -64,14 +64,16 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void waitForAuth() {
+    private boolean waitForAuth() {
         boolean auth = false;
         while (!auth) {
             String message = null;
             try {
                 message = in.readUTF();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                System.out.println(clientName + " вышел без авторизации");
+                break;
             }
             try {
                 if (isAuthOk(message)) {
@@ -85,8 +87,11 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
         }
+        if (auth == false) return auth;
+
         System.out.println(clientName + " подключился к чату");
         new Thread(new MessagesSender(clientName + " подключился к чату", null, server)).start();
+        return auth;
     }
 
     private boolean isAuthOk(String message) {
