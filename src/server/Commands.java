@@ -17,8 +17,13 @@ public class Commands {
             changeNick(command, clientHandler);
         }
         if (command.contains("/kill")){
-            killClient(clientHandler, command);
-
+            killClient(command, clientHandler);
+        }
+        if (command.contains("/reg")){
+            registration(command, clientHandler);
+        }
+        if (command.contains("/rename")){
+            rename(command, clientHandler);
         }
 
     }
@@ -34,7 +39,7 @@ public class Commands {
             }
         }
 
-        if (newNick != "") {
+        if (!newNick.equals(" ")) {
             try {
                 SQLHandler.changeNick(clientHandler.getClientName(), newNick);
             } catch (ChangeNickException e) {
@@ -43,7 +48,7 @@ public class Commands {
             String oldNick = clientHandler.getClientName();
             clientHandler.setNick(newNick);
             //out.writeUTF("Пользователь " + oldNick + " сменил ник на " + newNick);
-            new Thread(new MessagesSender("Пользователь " + oldNick + " сменил ник на " + newNick, clientHandler.getClientName(), clientHandler.getServer())).start();
+            new Thread(new MessagesSender("Пользователь " + oldNick + " сменил ник на " + newNick, null, clientHandler.getServer())).start();
         }
     }
 
@@ -55,12 +60,6 @@ public class Commands {
        return commandList;
     }
     public static void showCommands(ClientHandler clientHandler){
-//       try{
-//           clientHandler.getOut().writeUTF(commandsInfo.toString());
-//       } catch(IOException e){
-//           e.printStackTrace();
-//           System.out.println("Не получается показать команды");
-//       }
         for(String com : commandsInfo){
             try{
                 clientHandler.getOut().writeUTF(com);
@@ -70,8 +69,9 @@ public class Commands {
         }
     }
 
-    public static void killClient(ClientHandler clientHandler, String command) {
+    public static void killClient(String command, ClientHandler clientHandler) {
         String[] cm = command.split(" ");
+        if (!cm[0].equals("/kill")) return;
         if (!cm[1].equals(PASSWORD)) {
             try {
                 clientHandler.getOut().writeUTF("Неверный пароль"); //надо проверить, не рассылается ли оно всем.
@@ -96,11 +96,69 @@ public class Commands {
             }
         }
 
+    }
 
-        //        try {
-//            clientHandler.getOut().writeUTF("end session");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    public static void registration (String command, ClientHandler clientHandler) {
+        String[] cm = command.split(" ");
+        if (!cm[0].equals("/reg")) return;
+        if (!cm[1].equals(PASSWORD)) {
+            try {
+                clientHandler.getOut().writeUTF("Неверный пароль");
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String nick = "";
+        for (int i = 2; i < cm.length - 2; i++) {
+            nick = nick + cm[i] + " ";
+        }
+
+        String login = cm[cm.length - 2];
+        String password = cm[cm.length - 1];
+        SQLHandler.registration(nick, login, password);
+    }
+
+//    public static void registrationWithoutAuth(String command) {
+//        String[] cm = command.split("___");
+//        if (!cm[0].equals("reg")) return;
+//
+//        String nick = cm[1];
+//        String login = cm[2];
+//        String password = cm[3];
+//        SQLHandler.registration(nick, login, password);
+//
+//    }
+
+    public static void rename (String command, ClientHandler clientHandler) {
+        String[] cm = command.split("___");
+        if (!cm[0].equals("/rename")) return;
+        if (!cm[1].equals(PASSWORD)) {
+            try {
+                clientHandler.getOut().writeUTF("Неверный пароль");
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String oldNick = cm[2];
+        String newNick = cm[3];
+
+        ClientHandler criminal;
+        if ((criminal = clientHandler.getServer().getClientHandlerByNick(oldNick)) != null){
+            changeNick("/changenick " + newNick, criminal);
+            try {
+                criminal.getOut().writeUTF("Администратор сменил ваш ник на " + newNick);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                clientHandler.getOut().writeUTF("Пользователь с таким ником не найден");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

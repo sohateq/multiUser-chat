@@ -76,6 +76,7 @@ public class ClientHandler implements Runnable {
                 break;
             }
             try {
+
                 if (isAuthOk(message)) {
                     out.writeUTF("signIn_success");
                     auth = true;
@@ -99,16 +100,28 @@ public class ClientHandler implements Runnable {
 
         if (message != null) {
             String[] parsedMessage = message.split("___");
-            if (parsedMessage.length == 3) {
+
                 try {
+                    registrationWithoutAuth(parsedMessage); //прикрутил это в самом конце, чтобы не залогиненный мог зарегаться
                     processAuthMessage(parsedMessage);
                     return true;
                 } catch (AuthFailException e) {
                     return false;
                 }
-            }
+
         }
         return false;
+    }
+
+    private void registrationWithoutAuth(String[] cm) {
+        //String[] cm = command.split("___");
+        if (!cm[0].equals("reg")) return;
+
+        String nick = cm[1];
+        String login = cm[2];
+        String password = cm[3];
+        SQLHandler.registration(nick, login, password);
+
     }
 
     private void processAuthMessage(String[] parsedMessage) throws AuthFailException   {
