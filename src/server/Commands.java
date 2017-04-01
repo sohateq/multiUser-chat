@@ -39,7 +39,7 @@ public class Commands {
             }
         }
 
-        if (!newNick.equals(" ")) {
+        if (!newNick.equals("")) {
             try {
                 SQLHandler.changeNick(clientHandler.getClientName(), newNick);
             } catch (ChangeNickException e) {
