@@ -102,7 +102,7 @@ public class ClientHandler implements Runnable {
             String[] parsedMessage = message.split("___");
 
                 try {
-                    registrationWithoutAuth(parsedMessage); //прикрутил это в самом конце, чтобы не залогиненный мог зарегаться
+                    registrationWithoutAuth(parsedMessage); //прикрутил это в самом конце, чтобы не залогиненный мог зарегистрироваться
                     processAuthMessage(parsedMessage);
                     return true;
                 } catch (AuthFailException e) {
@@ -121,7 +121,10 @@ public class ClientHandler implements Runnable {
         String login = cm[2];
         String password = cm[3];
         SQLHandler.registration(nick, login, password);
-
+        //время костылей
+        cm[0] = "auth";
+        cm[1] = login;
+        cm[2] = password;
     }
 
     private void processAuthMessage(String[] parsedMessage) throws AuthFailException   {
@@ -172,41 +175,7 @@ public class ClientHandler implements Runnable {
         this.clientName = nick;
     }
 
-//    public void ifCommand(String command){
-//        if (command.contains("/changenick")){
-//            changeNick(command);
-//        }
-//
-//    }
-//
-//        public void changeNick(String message) {
-//
-//                    //String command = ifCommand(message);
-//                String[] cm = message.split(" ");
-//                String newNick = "";
-//                if (cm[0].equals("/changenick")) {
-//                    for (int i = 1; i < cm.length; i++) {
-//                        newNick = newNick + cm[i] + " ";
-//                    }
-//                }
-//
-//                    if (newNick != "") {
-//                        try {
-//                            SQLHandler.changeNick(getClientName(), newNick);
-//                        } catch (ChangeNickException e) {
-//                            return;
-//                        }
-//                        String oldNick = getClientName();
-//                        setNick(newNick);
-//                        //out.writeUTF("Пользователь " + oldNick + " сменил ник на " + newNick);
-//                        new Thread(new MessagesSender("Пользователь " + oldNick + " сменил ник на " + newNick, clientName, server)).start();
-//                    }
-//
-//
-//
-//
-//
-//        }
+
 
 
 

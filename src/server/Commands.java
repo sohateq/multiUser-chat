@@ -99,7 +99,7 @@ public class Commands {
     }
 
     public static void registration (String command, ClientHandler clientHandler) {
-        String[] cm = command.split(" ");
+        String[] cm = command.split("___");
         if (!cm[0].equals("/reg")) return;
         if (!cm[1].equals(PASSWORD)) {
             try {
@@ -109,13 +109,13 @@ public class Commands {
                 e.printStackTrace();
             }
         }
-        String nick = "";
-        for (int i = 2; i < cm.length - 2; i++) {
-            nick = nick + cm[i] + " ";
-        }
-
-        String login = cm[cm.length - 2];
-        String password = cm[cm.length - 1];
+//        String nick = "";
+//        for (int i = 2; i < cm.length - 2; i++) {
+//            nick = nick + cm[i] + " ";
+//        }
+        String nick = cm[2];
+        String login = cm[3];
+        String password = cm[4];
         SQLHandler.registration(nick, login, password);
     }
 
