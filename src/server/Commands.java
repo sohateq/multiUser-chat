@@ -1,6 +1,7 @@
 package server;
 
 import exceptions.ChangeNickException;
+import exceptions.RegistrationFailException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,10 +28,9 @@ public class Commands {
         }
 
     }
-    //public static void changeNick(){}
+
     public static void changeNick(String message, ClientHandler clientHandler) {
 
-        //String command = ifCommand(message);
         String[] cm = message.split(" ");
         String newNick = "";
         if (cm[0].equals("/changenick")) {
@@ -47,7 +47,6 @@ public class Commands {
             }
             String oldNick = clientHandler.getClientName();
             clientHandler.setNick(newNick);
-            //out.writeUTF("Пользователь " + oldNick + " сменил ник на " + newNick);
             new Thread(new MessagesSender("Пользователь " + oldNick + " сменил ник на " + newNick, null, clientHandler.getServer())).start();
         }
     }
@@ -109,26 +108,25 @@ public class Commands {
                 e.printStackTrace();
             }
         }
-//        String nick = "";
-//        for (int i = 2; i < cm.length - 2; i++) {
-//            nick = nick + cm[i] + " ";
-//        }
+
         String nick = cm[2];
         String login = cm[3];
         String password = cm[4];
-        SQLHandler.registration(nick, login, password);
+        try {
+            SQLHandler.registration(nick, login, password);
+        } catch (RegistrationFailException e) {
+            e.printStackTrace();
+
+            try {
+                clientHandler.getOut().writeUTF("Невозможно зарегистрировать такого пользователя");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+        }
     }
 
-//    public static void registrationWithoutAuth(String command) {
-//        String[] cm = command.split("___");
-//        if (!cm[0].equals("reg")) return;
-//
-//        String nick = cm[1];
-//        String login = cm[2];
-//        String password = cm[3];
-//        SQLHandler.registration(nick, login, password);
-//
-//    }
+
 
     public static void rename (String command, ClientHandler clientHandler) {
         String[] cm = command.split("___");

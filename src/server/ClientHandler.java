@@ -114,17 +114,19 @@ public class ClientHandler implements Runnable {
     }
 
     private void registrationWithoutAuth(String[] cm) {
-        //String[] cm = command.split("___");
         if (!cm[0].equals("reg")) return;
-
-        String nick = cm[1];
-        String login = cm[2];
-        String password = cm[3];
-        SQLHandler.registration(nick, login, password);
-        //время костылей
-        cm[0] = "auth";
-        cm[1] = login;
-        cm[2] = password;
+        try {
+            String nick = cm[1];
+            String login = cm[2];
+            String password = cm[3];
+            SQLHandler.registration(nick, login, password);
+            //время костылей. Это нужно чтобы после регистрации сразу залогиниться
+            cm[0] = "auth";
+            cm[1] = login;
+            cm[2] = password;
+        } catch (RegistrationFailException e){
+            e.printStackTrace();
+        }
     }
 
     private void processAuthMessage(String[] parsedMessage) throws AuthFailException   {

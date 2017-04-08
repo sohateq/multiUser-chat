@@ -107,7 +107,7 @@ public class SQLHandler {
         }
     }
 
-    public static void registration (String nick, String login, String pass){
+    public static void registration (String nick, String login, String pass) throws RegistrationFailException{
         try{
             Statement statement = connection.createStatement();
             statement.executeUpdate("insert into \"users_table\" "
@@ -115,6 +115,7 @@ public class SQLHandler {
             System.out.println("Зарегистирировался новый пользователь с ником " + nick);
         } catch (SQLException e){
             e.printStackTrace();
+            throw new RegistrationFailException();
         }
 
     }

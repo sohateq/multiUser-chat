@@ -48,13 +48,13 @@ public class ClientWindow extends JFrame {
         setBounds(600, 300, WINDOW_WIDTH, WINDOW_HEIGHT);
         setTitle("Клиент");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Font font1 = new Font("Arial", 0, 18 );
+        Font font1 = new Font("Arial", 0, 18);
 
         //authentication
-        authPanel = new JPanel(new GridLayout(2,3));
+        authPanel = new JPanel(new GridLayout(2, 3));
         //authPanel.setMinimumSize(new Dimension(WINDOW_WIDTH, (int)(0.1 * WINDOW_HEIGHT)));//не работает
         //authPanel.setSize(new Dimension(WINDOW_WIDTH, (int)(0.25 * WINDOW_HEIGHT)));
-        authPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, (int)(0.15 * WINDOW_HEIGHT)));
+        authPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, (int) (0.15 * WINDOW_HEIGHT)));
         JTextField loginField = new JTextField();
         loginField.setToolTipText("Введите логин уже");
 
@@ -90,6 +90,13 @@ public class ClientWindow extends JFrame {
 
         authPanel.add(registerButton);
 
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createRegistrationWindow(getX(), getY(), getWidth()/2, getHeight()/2);
+            }
+        });
+
         signInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,7 +118,7 @@ public class ClientWindow extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, (int)(0.07 * WINDOW_HEIGHT)));
+        bottomPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, (int) (0.07 * WINDOW_HEIGHT)));
         add(bottomPanel, BorderLayout.SOUTH);
 
         //кнопка отправки сообщения
@@ -160,8 +167,7 @@ public class ClientWindow extends JFrame {
                     out.close();
                     in.close();
                 } catch (IOException exc) {
-                }
-                finally {
+                } finally {
                     System.exit(0);
                 }
             }
@@ -182,25 +188,25 @@ public class ClientWindow extends JFrame {
             public void run() {
                 try {
                     while (true) {
-                            String message = in.readUTF();
-                            if (message.equalsIgnoreCase("end session")) {
-                                try {
-                                    out.writeUTF("/end");
-                                    out.flush();
-                                    socket.close();
-                                    out.close();
-                                    in.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-                            } else if (message.equalsIgnoreCase("signIn_success")) {
-                                JOptionPane.showMessageDialog(null, "SingIn ok!");
-                                authPanel.setVisible(false);
-                            } else if (message.equalsIgnoreCase("signIn_fail")) {
-                                JOptionPane.showMessageDialog(null, "SingIn fail! Try one more time");
-                            } else
-                                serverMsgElement.append(message + "\n");
+                        String message = in.readUTF();
+                        if (message.equalsIgnoreCase("end session")) {
+                            try {
+                                out.writeUTF("/end");
+                                out.flush();
+                                socket.close();
+                                out.close();
+                                in.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        } else if (message.equalsIgnoreCase("signIn_success")) {
+                            JOptionPane.showMessageDialog(null, "SingIn ok!");
+                            authPanel.setVisible(false);
+                        } else if (message.equalsIgnoreCase("signIn_fail")) {
+                            JOptionPane.showMessageDialog(null, "SingIn fail! Try one more time");
+                        } else
+                            serverMsgElement.append(message + "\n");
                     }
                 } catch (Exception e) {
                 }
@@ -214,5 +220,42 @@ public class ClientWindow extends JFrame {
             out.flush();
             clientMsgElement.setText("");
         }
+    }
+
+    private void createRegistrationWindow(int x, int y, int width, int height) {
+        JFrame frame = new JFrame();
+
+        Font font1 = new Font("Arial", 0, 18);
+
+        frame.setBounds(x, y, width, height);
+        frame.setLayout(new GridLayout(5, 2));
+
+        JLabel nickLabel = new JLabel("Ник:");
+        nickLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        nickLabel.setFont(font1);
+        frame.add(nickLabel);
+
+        JTextField nickField = new JTextField();
+        frame.add(nickField);
+
+        JLabel loginLabel = new JLabel("Логин:");
+        frame.add(loginLabel);
+
+        JTextField loginField = new JTextField();
+        frame.add(loginField);
+
+        JLabel passLabel = new JLabel("Пароль:");
+        frame.add(passLabel);
+
+        JTextField passField = new JTextField();
+        frame.add(passField);
+
+        JLabel passAgainLabel = new JLabel("Пароль еще раз:");
+        frame.add(passAgainLabel);
+
+        JTextField passAgainField = new JTextField();
+        frame.add(passAgainField);
+
+        frame.setVisible(true);
     }
 }
